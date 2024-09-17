@@ -1,8 +1,9 @@
 import React, { useState , useEffect} from 'react'
 import NewsItem from './NewsItem'
 import Spinner from './Spinner';
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 import InfiniteScroll from "react-infinite-scroll-component";
+
 
 
 const News =(props)=> {
@@ -18,16 +19,29 @@ const [totalResults, setTotalresults]= useState(0)
   
  const updateNews= async()=>{
     props.setProgress(10);
-    let url=`https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${props.page}&pageSize=${props.pageSize}`;
+    let url=`https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
     setLoading(true)
-    fetch(url).then((response) => response.json())
+    fetch(url).then((response) =>{
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    } )
     .then((data) => {
+      console.log("Data returned:", data);
+    if (data.status === "error") {
+      throw new Error(data.message); // NewsAPI error message
+    }
+    console.log(url)
       props.setProgress(50);
       setArticles(data.articles)
       setTotalresults(data.totalResults)
       setLoading(false)
        
         props.setProgress(100);
+      })
+      .catch((error) => {
+        console.error("Error fetching news:", error);
       });
   }
   
@@ -122,15 +136,15 @@ const [totalResults, setTotalresults]= useState(0)
     )
   }
 
-News.defaultProps={
-  country:'in',
-  pageSize:6,
-  category:'general'
-}
-News.propTypes ={
-  country:PropTypes.string,
-  pageSize:PropTypes.number,
-  category:PropTypes.string
-}
+// News.defaultProps={
+//   country:'in',
+//   pageSize:6,
+//   category:'general'
+// }
+// News.propTypes ={
+//   country:PropTypes.string,
+//   pageSize:PropTypes.number,
+//   category:PropTypes.string
+// }
 
 export default News
