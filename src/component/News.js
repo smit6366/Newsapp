@@ -3,6 +3,7 @@ import NewsItem from './NewsItem'
 import Spinner from './Spinner';
 // import PropTypes from 'prop-types'
 import InfiniteScroll from "react-infinite-scroll-component";
+import axios from 'axios';
 
 
 
@@ -21,18 +22,9 @@ const [totalResults, setTotalresults]= useState(0)
     props.setProgress(10);
     let url=`https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
     setLoading(true)
-    fetch(url).then((response) =>{
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    } )
+    axios(url).then((response) =>
+       response.data)
     .then((data) => {
-      console.log("Data returned:", data);
-    if (data.status === "error") {
-      throw new Error(data.message); // NewsAPI error message
-    }
-    console.log(url)
       props.setProgress(50);
       setArticles(data.articles)
       setTotalresults(data.totalResults)
@@ -46,49 +38,12 @@ const [totalResults, setTotalresults]= useState(0)
   }
   
   useEffect(()=>{
-  //  props.setProgress(10);
-  //     let url=`https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=1&pageSize=${props.pageSize}`;
-  //     setLoading(true)
-  //     fetch(url).then((response) => response.json())
-  //     .then((data) => {
-  //       props.setProgress(50);
-  //       setArticles(data.articles)
-  //       setTotalresults(data.totalResults)
-  //       setLoading(false)
-         
-  //         props.setProgress(100);
-  //   });
+
   document.title=`${capitalizeFirst(props.category)}` 
     updateNews()
     //eslint-disable-next-line
   },[])
-//  const handletoprev= async ()=>{
-//     let url=`https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page - 1}&pageSize=${props.pageSize}`;
-//     setLoading(true)
-//       fetch(url).then((response) => response.json())
-//       .then((data) => {
-//         setArticles(data.articles)
-//         setTotalresults(data.totalResults)
-//         setLoading(false)
-//     })
-//     setPage(page-1)
-//     updateNews()
-//   }
-//  const handletonex= async ()=>{
-//     if(!Math.ceil(page> totalResults/props.pageSize)){
 
-//       let url=`https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=4c01cae649f847138fb6e9465b651efb&page=${page}&pageSize=${props.pageSize}`;
-//       setLoading(true)
-//       fetch(url).then((response) => response.json())
-//       .then((data) => {
-//         setArticles(data.articles)
-//         setTotalresults(data.totalResults)
-//         setLoading(false)
-//     });
-//     setPage(page+1)
-//     updateNews()
-//     }
-//   }
   const fetchMoreData = async () => {
 
     let url=`https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=4c01cae649f847138fb6e9465b651efb&page=${page + 1}&pageSize=${props.pageSize}`;
@@ -128,23 +83,9 @@ const [totalResults, setTotalresults]= useState(0)
           </InfiniteScroll>
           </div>
         </div>
-        {/* <div className="container d-flex justify-content-around">
-        <button disabled={page<=1}type="button" className="btn btn-dark" onClick={handletoprev}>&laquo;Prev</button>
-        <button disabled={page + 1 > Math.ceil(totalResults/props.pageSize)}type="button" className="btn btn-dark" onClick={handletonex}>Nex&raquo;</button>
-        </div> */}
+       
       </>
     )
   }
-
-// News.defaultProps={
-//   country:'in',
-//   pageSize:6,
-//   category:'general'
-// }
-// News.propTypes ={
-//   country:PropTypes.string,
-//   pageSize:PropTypes.number,
-//   category:PropTypes.string
-// }
 
 export default News
