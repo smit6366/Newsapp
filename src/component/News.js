@@ -20,7 +20,8 @@ const [totalResults, setTotalresults]= useState(0)
   
  const updateNews= async()=>{
     props.setProgress(10);
-    let url=`https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
+    let url=`https://gnews.io/api/v4/top-headlines?category=${props.category}&lang=en&country=${props.country}&max=10&apikey=${props.apiKey}`;
+    console.log(url)
     setLoading(true)
     axios(url).then((response) =>
        response.data)
@@ -46,7 +47,7 @@ const [totalResults, setTotalresults]= useState(0)
 
   const fetchMoreData = async () => {
 
-    let url=`https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=4c01cae649f847138fb6e9465b651efb&page=${page + 1}&pageSize=${props.pageSize}`;
+    let url = `https://gnews.io/api/v4/top-headlines?category=${props.category}&lang=en&country=${props.country}&max=10&apikey=${props.apiKey}`
     setPage(page+1)
     fetch(url).then((response) => response.json())
     .then((data) => {

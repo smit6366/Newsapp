@@ -6,6 +6,7 @@ import NavBar from './component/NavBar';
 import News from './component/News';
 import LoadingBar from 'react-top-loading-bar'
 
+
 const App =()=> {
   const apiKey=process.env.REACT_APP_NEWS_API
   const [progress,setProgress] = useState(10)
