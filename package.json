@@ -1,6 +1,7 @@
 {
   "name": "ecoomerce1",
   "version": "0.1.0",
+  "homepage": "https://smit6366.github.io/Newsapp",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
@@ -44,6 +45,7 @@
     ]
   },
   "devDependencies": {
-    "ajv": "^8.16.0"
+    "ajv": "^8.16.0",
+    "gh-pages": "^6.1.1"
   }
 }
